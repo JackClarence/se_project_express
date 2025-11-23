@@ -18,11 +18,9 @@ const createClothingItem = (req, res) => {
   const likes = [];
   const {name, weather, imageUrl} = req.body;
 
-  //triggers validation error, says requires "likes"
   Item.create({name, weather, imageUrl, owner, likes})
     .then((item) => {
       res.status(201).send(item);
-      console.log(item);
     })
     .catch((err) => {
       console.error(err);

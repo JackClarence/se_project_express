@@ -26,17 +26,14 @@ const clothingItemSchema = new mongoose.Schema({
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    //Why no ref prop? Is this supposed to be of ObjectId type, or is the link supposed to be connected to an item that's of the ObjectId type?
   },
   likes: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
-    //possible that no action is needed, but if there is, review how to add default value (empty by default here), and add to ref prop
   }],
   createdAt: {
     type: Date,
     default: Date.now
-    //review how to add default value (default value of Date.now)
   }
 });
 
