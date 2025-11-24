@@ -21,7 +21,7 @@ const getUser = (req, res) => {
     .then((user) => res.status(200).send(user))
     .catch((err) => {
       console.error(err);
-      if(err.name === "DocumentNotFoundError"){
+      if (err.name === "DocumentNotFoundError"){
         return res.status(NOT_FOUND_STATUS_CODE).send({ message: err.message });
       } else if( err.name === "CastError"){
         return res.status(VALIDATION_ERROR_STATUS_CODE).send({ message: err.message });
@@ -33,7 +33,7 @@ const getUser = (req, res) => {
 const createUser = (req, res) => {
   const { name, avatar } = req.body;
 
-  User.create({name, avatar})
+  User.create({ name, avatar })
     .then((user) => res.status(201).send(user))
     .catch((err) => {
       console.error(err);

@@ -1,12 +1,12 @@
 const Item = require("../models/clothingItem");
-const {VALIDATION_ERROR_STATUS_CODE, NOT_FOUND_STATUS_CODE, DEFAULT_ERROR_STATUS_CODE} = require("../utils/errors");
+const { VALIDATION_ERROR_STATUS_CODE, NOT_FOUND_STATUS_CODE, DEFAULT_ERROR_STATUS_CODE } = require("../utils/errors");
 
 const getClothingItems = (req, res) => {
   Item.find({})
     .then((items) => res.status(200).send(items))
     .catch((err) => {
       console.error(err);
-      if(err.name === "DocumentNotFoundError"){
+      if (err.name === "DocumentNotFoundError"){
         return res.status(NOT_FOUND_STATUS_CODE).send({ message: err.message });
       }
       return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: err.message });
@@ -41,7 +41,7 @@ const deleteClothingItem = (req, res) => {
       console.error(err);
       if(err.name === "DocumentNotFoundError"){
         return res.status(NOT_FOUND_STATUS_CODE).send({ message: err.message });
-      } else if( err.name === "CastError"){
+      } else if(err.name === "CastError"){
         return res.status(VALIDATION_ERROR_STATUS_CODE).send({ message: err.message });
       }
       return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: err.message });

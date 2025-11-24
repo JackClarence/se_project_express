@@ -17,7 +17,7 @@ const clothingItemSchema = new mongoose.Schema({
     type: String,
     required: true,
     validate: {
-      validator(value){
+      validator(value) {
         return validator.isURL(value);
       },
       message: "You must enter a valid URL",
@@ -25,6 +25,7 @@ const clothingItemSchema = new mongoose.Schema({
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
+    ref: 'user',
     required: true,
   },
   likes: [{
