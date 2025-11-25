@@ -42,8 +42,8 @@ const deleteClothingItem = (req, res) => {
       if(err.name === "DocumentNotFoundError"){
         return res.status(NOT_FOUND_STATUS_CODE).send({ message: err.message });
       } else if(err.name === "CastError"){
-        //given the 3-possibility return logic, lint misunderstands the else statement as unnecessary.
-        //issue repeats in likeItem, dislikeItem, getUser
+        // given the 3-possibility return logic, lint misunderstands the else statement as unnecessary.
+        // issue repeats in likeItem, dislikeItem, getUser
         return res.status(VALIDATION_ERROR_STATUS_CODE).send({ message: err.message });
       }
       return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: err.message });
