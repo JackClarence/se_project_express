@@ -6,9 +6,6 @@ const getClothingItems = (req, res) => {
     .then((items) => res.status(200).send(items))
     .catch((err) => {
       console.error(err);
-      if (err.name === "DocumentNotFoundError"){
-        return res.status(NOT_FOUND_STATUS_CODE).send({ message: err.message });
-      }
       return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: err.message });
     })
 };
@@ -41,9 +38,7 @@ const deleteClothingItem = (req, res) => {
       console.error(err);
       if(err.name === "DocumentNotFoundError"){
         return res.status(NOT_FOUND_STATUS_CODE).send({ message: err.message });
-      } else if(err.name === "CastError"){
-        // given the 3-possibility return logic, lint misunderstands the else statement as unnecessary.
-        // issue repeats in likeItem, dislikeItem, getUser
+      } if(err.name === "CastError"){
         return res.status(VALIDATION_ERROR_STATUS_CODE).send({ message: err.message });
       }
       return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: err.message });
@@ -59,9 +54,7 @@ const likeItem = (req, res) => {
     .then((user) => res.status(200).send(user))
     .catch((err) => {
       console.error(err);
-      if(err.name === "DocumentNotFoundError"){
-        return res.status(NOT_FOUND_STATUS_CODE).send({ message: err.message });
-      } else if( err.name === "CastError"){
+      if( err.name === "CastError"){
         return res.status(VALIDATION_ERROR_STATUS_CODE).send({ message: err.message });
       }
       return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: err.message });
@@ -77,9 +70,7 @@ const dislikeItem = (req, res) => {
     .then((user) => res.status(200).send(user))
     .catch((err) => {
       console.error(err);
-      if(err.name === "DocumentNotFoundError"){
-        return res.status(NOT_FOUND_STATUS_CODE).send({ message: err.message });
-      } else if( err.name === "CastError"){
+       if( err.name === "CastError"){
         return res.status(VALIDATION_ERROR_STATUS_CODE).send({ message: err.message });
       }
       return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: err.message });
