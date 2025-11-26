@@ -54,7 +54,9 @@ const likeItem = (req, res) => {
     .then((user) => res.status(200).send(user))
     .catch((err) => {
       console.error(err);
-      if( err.name === "CastError"){
+      if(err.name === "DocumentNotFoundError"){
+        return res.status(NOT_FOUND_STATUS_CODE).send({ message: err.message });
+      } if( err.name === "CastError"){
         return res.status(VALIDATION_ERROR_STATUS_CODE).send({ message: err.message });
       }
       return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: err.message });
@@ -70,7 +72,9 @@ const dislikeItem = (req, res) => {
     .then((user) => res.status(200).send(user))
     .catch((err) => {
       console.error(err);
-       if( err.name === "CastError"){
+      if(err.name === "DocumentNotFoundError"){
+        return res.status(NOT_FOUND_STATUS_CODE).send({ message: err.message });
+      } if( err.name === "CastError"){
         return res.status(VALIDATION_ERROR_STATUS_CODE).send({ message: err.message });
       }
       return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: err.message });
