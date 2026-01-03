@@ -1,6 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const mainRouter = require("./routes/index");
+const auth = require("./middlewares/auth");
+const cors = require("cors");
 
 const app = express();
 
@@ -14,12 +16,11 @@ mongoose
   .catch(console.error);
 
 app.use(express.json());
-app.use((req, res, next) => {
-  req.user = {
-    _id: '69232fcade8403edf28e9172'
-  };
-  next();
-});
+
+app.use(cors());
+
+app.use(auth);
+
 app.use("/", mainRouter);
 
 app.listen(PORT, () => {

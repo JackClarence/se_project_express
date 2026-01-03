@@ -1,5 +1,5 @@
 const Item = require("../models/clothingItem");
-const { VALIDATION_ERROR_STATUS_CODE, NOT_FOUND_STATUS_CODE, DEFAULT_ERROR_STATUS_CODE } = require("../utils/errors");
+const { VALIDATION_ERROR_STATUS_CODE, NOT_FOUND_STATUS_CODE, DEFAULT_ERROR_STATUS_CODE, FORBIDDEN_ERROR_STATUS_CODE } = require("../utils/errors");
 
 const getClothingItems = (req, res) => {
   Item.find({})
@@ -29,17 +29,39 @@ const createClothingItem = (req, res) => {
 };
 
 const deleteClothingItem = (req, res) => {
-
-
-  Item.findByIdAndDelete(req.params.itemId)
+  const loggedUser = req.user._id;
+  console.log(loggedUser);
+  let owner = "";
+  Item.findById(req.params.itemId)
     .orFail()
-    .then((user) => res.status(200).send(user))
-    .catch((err) => {
+    .then((item) => {
+      owner = item.owner.toString();
+      return owner;
+    }) .then((owner) => {
+      if(loggedUser !== owner){
+        return res.status(FORBIDDEN_ERROR_STATUS_CODE).send({ message: "You must be authorized" });
+      } else {
+        Item.findByIdAndDelete(req.params.itemId)
+          .orFail()
+          .then((user) => res.status(200).send(user))
+          .catch((err) => {
+            console.error(err);
+            if(err.name === "DocumentNotFoundError"){
+              return res.status(NOT_FOUND_STATUS_CODE).send({ message: err.message });
+            } if(err.name === "CastError"){
+              return res.status(VALIDATION_ERROR_STATUS_CODE).send({ message: err.message });
+            }
+            return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: err.message });
+          })
+      }
+    }).catch((err) => {
       console.error(err);
-      if(err.name === "DocumentNotFoundError"){
-        return res.status(NOT_FOUND_STATUS_CODE).send({ message: err.message });
-      } if(err.name === "CastError"){
+      if( err.name === "CastError"){
         return res.status(VALIDATION_ERROR_STATUS_CODE).send({ message: err.message });
+      } if( err.name === "Forbidden"){
+        return res.status().send({ message: err.message });
+      } if(err.name === "DocumentNotFoundError"){
+        return res.status(NOT_FOUND_STATUS_CODE).send({ message: err.message });
       }
       return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: err.message });
     })
@@ -51,7 +73,7 @@ const likeItem = (req, res) => {
     { $addToSet: {likes: req.user._id} },
     { new: true }
   ).orFail()
-    .then((user) => res.status(200).send(user))
+    .then((item) => res.status(200).send(item))
     .catch((err) => {
       console.error(err);
       if(err.name === "DocumentNotFoundError"){
