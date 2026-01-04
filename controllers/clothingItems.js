@@ -59,7 +59,7 @@ const deleteClothingItem = (req, res) => {
       if( err.name === "CastError"){
         return res.status(VALIDATION_ERROR_STATUS_CODE).send({ message: err.message });
       } if( err.name === "Forbidden"){
-        return res.status().send({ message: err.message });
+        return res.status(FORBIDDEN_ERROR_STATUS_CODE).send({ message: err.message });
       } if(err.name === "DocumentNotFoundError"){
         return res.status(NOT_FOUND_STATUS_CODE).send({ message: err.message });
       }
