@@ -6,7 +6,7 @@ const getClothingItems = (req, res) => {
     .then((items) => res.status(200).send(items))
     .catch((err) => {
       console.error(err);
-      return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: err.message });
+      return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: "An error has occurred on the server" });
     })
 };
 
@@ -24,23 +24,22 @@ const createClothingItem = (req, res) => {
       if(err.name === "ValidationError"){
         return res.status(VALIDATION_ERROR_STATUS_CODE).send({ message: err.message });
       }
-      return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: err.message });
+      return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: "An error has occurred on the server" });
     })
 };
 
 const deleteClothingItem = (req, res) => {
   const loggedUser = req.user._id;
-  console.log(loggedUser);
-  let owner = "";
+  // console.log(loggedUser);
   Item.findById(req.params.itemId)
     .orFail()
     .then((item) => {
-      owner = item.owner.toString();
-      return owner;
+      const theOwner = item.owner.toString();
+      return theOwner;
     }) .then((owner) => {
-      if(loggedUser !== owner){
-        return res.status(FORBIDDEN_ERROR_STATUS_CODE).send({ message: "You must be authorized" });
-      } else {
+        if(loggedUser !== owner){
+          return res.status(FORBIDDEN_ERROR_STATUS_CODE).send({ message: "You must be authorized" });
+        }
         Item.findByIdAndDelete(req.params.itemId)
           .orFail()
           .then((user) => res.status(200).send(user))
@@ -51,9 +50,9 @@ const deleteClothingItem = (req, res) => {
             } if(err.name === "CastError"){
               return res.status(VALIDATION_ERROR_STATUS_CODE).send({ message: err.message });
             }
-            return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: err.message });
+            return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: "An error has occurred on the server" });
           })
-      }
+        return owner;
     }).catch((err) => {
       console.error(err);
       if( err.name === "CastError"){
@@ -63,7 +62,7 @@ const deleteClothingItem = (req, res) => {
       } if(err.name === "DocumentNotFoundError"){
         return res.status(NOT_FOUND_STATUS_CODE).send({ message: err.message });
       }
-      return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: err.message });
+      return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: "An error has occurred on the server" });
     })
 };
 
@@ -81,7 +80,7 @@ const likeItem = (req, res) => {
       } if( err.name === "CastError"){
         return res.status(VALIDATION_ERROR_STATUS_CODE).send({ message: err.message });
       }
-      return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: err.message });
+      return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: "An error has occurred on the server" });
     })
 };
 
@@ -99,7 +98,7 @@ const dislikeItem = (req, res) => {
       } if( err.name === "CastError"){
         return res.status(VALIDATION_ERROR_STATUS_CODE).send({ message: err.message });
       }
-      return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: err.message });
+      return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: "An error has occurred on the server" });
     })
 };
 

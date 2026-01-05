@@ -8,7 +8,7 @@ module.exports = (req, res, next) => {
   if ((req.method === "POST" && req.url === "/signin") || (req.method === "POST" && req.url === "/signup") || (req.method === "GET" && req.url === "/items")){
     next();
   } else {
-    //console.log(authorization);
+    // console.log(authorization);
     if (!authorization || !authorization.startsWith("Bearer ")){
     return res.status(UNAUTHORIZED_ERROR_STATUS_CODE).send({ message: "Authorization required" });
     }
@@ -18,13 +18,16 @@ module.exports = (req, res, next) => {
 
     try {
       payload = jwt.verify(token, JWT_SECRET);
-      //console.log("Payload: ", payload);
+      // console.log("Payload: ", payload);
     } catch (err) {
       return res.status(UNAUTHORIZED_ERROR_STATUS_CODE).send({ message: "Authorization required" });
     }
     req.user = payload;
 
+
+
     next();
   }
+  return req.user;
 };
 

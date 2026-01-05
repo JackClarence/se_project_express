@@ -1,11 +1,11 @@
-const User = require("../models/user");
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
+const User = require("../models/user");
 const {VALIDATION_ERROR_STATUS_CODE, NOT_FOUND_STATUS_CODE, DEFAULT_ERROR_STATUS_CODE, CONFLICT_ERROR_STATUS_CODE, UNAUTHORIZED_ERROR_STATUS_CODE} = require("../utils/errors");
 const {JWT_SECRET} = require("../utils/config");
 
 const getCurrentUser = (req, res) => {
-  console.log(req.user);
+  // console.log(req.user);
   User.findOne({ _id: req.user._id })
     .orFail()
     .then((user) => res.status(200).send(user))
@@ -16,7 +16,7 @@ const getCurrentUser = (req, res) => {
       } if( err.name === "CastError"){
         return res.status(VALIDATION_ERROR_STATUS_CODE).send({ message: err.message });
       }
-      return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: err.message });
+      return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: "An error has occurred on the server" });
     })
 };
 
@@ -37,7 +37,7 @@ const createUser = (req, res) => {
       } if(err.name === "MongoServerError"){
         return res.status(CONFLICT_ERROR_STATUS_CODE).send({ message: err.message });
       }
-      return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: err.message });
+      return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: "An error has occurred on the server" });
     })
 };
 
@@ -54,7 +54,7 @@ const updateUser = (req, res) => {
       } if(err.name === "ValidationError"){
         return res.status(VALIDATION_ERROR_STATUS_CODE).send({ message: err.message });
       }
-      return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: err.message });
+      return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: "An error has occurred on the server" });
     })
 };
 
@@ -67,17 +67,17 @@ const loginUser = (req, res) => {
         expiresIn: "7d",
       });
       res.status(200).send({token});
-      //console.log({token});
+      // console.log({token});
       return token;
     })
     .catch((err) => {
-      console.log(err.message);
+      // console.log(err.message);
       if(err.name === "Error"){
         return res.status(VALIDATION_ERROR_STATUS_CODE).send({ message: err.message });
       } if(err.message === "Incorrect email or password"){
         return res.status(UNAUTHORIZED_ERROR_STATUS_CODE).send({ message: err.message });
       }
-      return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: err.message });
+      return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: "An error has occurred on the server" });
     });
 };
 
