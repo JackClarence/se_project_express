@@ -12,9 +12,9 @@ const getCurrentUser = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError"){
-        return res.status(NOT_FOUND_STATUS_CODE).send({ message: err.message });
+        return res.status(NOT_FOUND_STATUS_CODE).send({ message: "User not found" });
       } if( err.name === "CastError"){
-        return res.status(VALIDATION_ERROR_STATUS_CODE).send({ message: err.message });
+        return res.status(VALIDATION_ERROR_STATUS_CODE).send({ message: "Invalid data" });
       }
       return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: "An error has occurred on the server" });
     })
@@ -33,9 +33,9 @@ const createUser = (req, res) => {
     .catch((err) => {
       console.error(err);
       if(err.name === "ValidationError"){
-        return res.status(VALIDATION_ERROR_STATUS_CODE).send({ message: err.message });
+        return res.status(VALIDATION_ERROR_STATUS_CODE).send({ message: "Invalid data" });
       } if(err.name === "MongoServerError"){
-        return res.status(CONFLICT_ERROR_STATUS_CODE).send({ message: err.message });
+        return res.status(CONFLICT_ERROR_STATUS_CODE).send({ message: "There has been a conflict" });
       }
       return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: "An error has occurred on the server" });
     })
@@ -50,9 +50,9 @@ const updateUser = (req, res) => {
     .catch((err) => {
       console.error(err);
       if(err.name === "DocumentNotFoundError"){
-        return res.status(NOT_FOUND_STATUS_CODE).send({ message: err.message });
+        return res.status(NOT_FOUND_STATUS_CODE).send({ message: "User not found" });
       } if(err.name === "ValidationError"){
-        return res.status(VALIDATION_ERROR_STATUS_CODE).send({ message: err.message });
+        return res.status(VALIDATION_ERROR_STATUS_CODE).send({ message: "Invalid data" });
       }
       return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: "An error has occurred on the server" });
     })
@@ -73,9 +73,9 @@ const loginUser = (req, res) => {
     .catch((err) => {
       // console.log(err.message);
       if(err.name === "Error"){
-        return res.status(VALIDATION_ERROR_STATUS_CODE).send({ message: err.message });
+        return res.status(VALIDATION_ERROR_STATUS_CODE).send({ message: "Invalid data" });
       } if(err.message === "Incorrect email or password"){
-        return res.status(UNAUTHORIZED_ERROR_STATUS_CODE).send({ message: err.message });
+        return res.status(UNAUTHORIZED_ERROR_STATUS_CODE).send({ message: "You must be authorized" });
       }
       return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: "An error has occurred on the server" });
     });
