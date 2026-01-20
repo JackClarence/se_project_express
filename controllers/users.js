@@ -1,7 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
-const {VALIDATION_ERROR_STATUS_CODE, NOT_FOUND_STATUS_CODE, DEFAULT_ERROR_STATUS_CODE, CONFLICT_ERROR_STATUS_CODE, UNAUTHORIZED_ERROR_STATUS_CODE} = require("../utils/errors");
 const UnauthorizedError = require("../middlewares/errors/unauthorized-error");
 const ConflictError = require("../middlewares/errors/conflict-error");
 const NotFoundError = require("../middlewares/errors/not-found-error");
@@ -18,7 +17,6 @@ const getCurrentUser = (req, res, next) => {
       if (err.name === "DocumentNotFoundError"){
         // return res.status(NOT_FOUND_STATUS_CODE).send({ message: "User not found" });
         next(new NotFoundError("User not found"));
-        next
       } if( err.name === "CastError"){
         // return res.status(VALIDATION_ERROR_STATUS_CODE).send({ message: "Invalid data" });
         next(new BadRequestError("Invalid data"));
@@ -61,7 +59,7 @@ const updateUser = (req, res, next) => {
     .catch((err) => {
       console.error(err);
       if(err.name === "DocumentNotFoundError"){
-        //return res.status(NOT_FOUND_STATUS_CODE).send({ message: "User not found" });
+        // return res.status(NOT_FOUND_STATUS_CODE).send({ message: "User not found" });
         next(new NotFoundError("User not found"));
       } if(err.name === "ValidationError"){
         // return res.status(VALIDATION_ERROR_STATUS_CODE).send({ message: "Invalid data" });

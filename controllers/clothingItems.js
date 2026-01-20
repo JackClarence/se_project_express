@@ -1,5 +1,4 @@
 const Item = require("../models/clothingItem");
-const { VALIDATION_ERROR_STATUS_CODE, NOT_FOUND_STATUS_CODE, DEFAULT_ERROR_STATUS_CODE, FORBIDDEN_ERROR_STATUS_CODE } = require("../utils/errors");
 const BadRequestError = require("../middlewares/errors/bad-request-error");
 const ForbiddenError = require("../middlewares/errors/forbidden-error");
 const NotFoundError = require("../middlewares/errors/not-found-error");
