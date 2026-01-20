@@ -2,7 +2,7 @@
 The back-end project is focused on creating a server for the WTWR application.
 
 ### Deployed Project
-The 
+The deployed project is available at [https://www.phoenix.tidderkcuf.com](https://www.phoenix.tidderkcuf.com).
 
 ### Technologies and techniques
 Program utilized Express, MongoDB, ESLint with Airbnb configuration, nodemon for development, URL validation with a validator. The API implements user addition, searching, and user listing, clothing item addition, listing, and clothing item deletion, and liking and disliking of clothing items.
