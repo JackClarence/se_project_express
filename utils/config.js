@@ -1,3 +1,5 @@
-const JWT_SECRET = "F89BCA61EF38381C25881FE5D329B";
+const { JWT_SECRET = "super-strong-secret" } = process.env;
 
-module.exports = { JWT_SECRET };
+module.exports = {
+  JWT_SECRET,
+};
