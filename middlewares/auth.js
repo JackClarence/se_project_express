@@ -8,7 +8,6 @@ module.exports = (req, res, next) => {
   if ((req.method === "POST" && req.url === "/signin") || (req.method === "POST" && req.url === "/signup") || (req.method === "GET" && req.url === "/items")){
     next();
   } else {
-    // console.log(authorization);
     if (!authorization || !authorization.startsWith("Bearer ")){
     next(new UnauthorizedError("Authorization required"));
     }
@@ -18,7 +17,6 @@ module.exports = (req, res, next) => {
 
     try {
       payload = jwt.verify(token, JWT_SECRET);
-      // console.log("Payload: ", payload);
     } catch (err) {
       next(new UnauthorizedError("Authorization required"));
     }

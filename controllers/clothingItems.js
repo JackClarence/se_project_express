@@ -44,8 +44,6 @@ const deleteClothingItem = (req, res, next) => {
       return theOwner;
     }) .then((owner) => {
         if(loggedUser !== owner){
-          // return res.status(FORBIDDEN_ERROR_STATUS_CODE).send({ message: "You must be authorized" });
-          // next(FORBIDDEN_ERROR_STATUS_CODE);
           next(new ForbiddenError("You must be authorized"));
         }
         Item.findByIdAndDelete(req.params.itemId)
@@ -54,29 +52,22 @@ const deleteClothingItem = (req, res, next) => {
           .catch((err) => {
             console.error(err);
             if(err.name === "DocumentNotFoundError"){
-              // return res.status(NOT_FOUND_STATUS_CODE).send({ message: "Item not found" });
               next(new NotFoundError("Item not found"));
             } if(err.name === "CastError"){
-              // return res.status(VALIDATION_ERROR_STATUS_CODE).send({ message: "Invalid data" });
               next(new BadRequestError("Invalid data"));
             }
-            // return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: "An error has occurred on the server" });
             next(err);
           })
         return owner;
     }).catch((err) => {
       console.error(err);
        if( err.name === "CastError"){
-        // return res.status(VALIDATION_ERROR_STATUS_CODE).send({ message: "Invalid data" });
         next(new BadRequestError("Invalid data"));
       } if( err.name === "Forbidden"){
-        // return res.status(FORBIDDEN_ERROR_STATUS_CODE).send({ message: "Forbidden" });
         next( new ForbiddenError("You must be authorized"));
       } if(err.name === "DocumentNotFoundError"){
-        // return res.status(NOT_FOUND_STATUS_CODE).send({ message: "Item not found" });
         next( new NotFoundError("Item not found"));
       }
-      // return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: "An error has occurred on the server" });
       next(err);
     })
 };
@@ -91,13 +82,10 @@ const likeItem = (req, res, next) => {
     .catch((err) => {
       console.error(err);
       if(err.name === "DocumentNotFoundError"){
-        // return res.status(NOT_FOUND_STATUS_CODE).send({ message: "Item not found" });
         next( new NotFoundError("Item not found"));
       } if( err.name === "CastError"){
-        // return res.status(VALIDATION_ERROR_STATUS_CODE).send({ message: "Invalid data" });
         next( new BadRequestError("Invalid data"));
       }
-      // return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: "An error has occurred on the server" });
       next(err);
     })
 };
@@ -112,13 +100,10 @@ const dislikeItem = (req, res, next) => {
     .catch((err) => {
       console.error(err);
       if(err.name === "DocumentNotFoundError"){
-        // return res.status(NOT_FOUND_STATUS_CODE).send({ message: "Item not found" });
         next( new NotFoundError("Item not found"));
       } if( err.name === "CastError"){
-        // return res.status(VALIDATION_ERROR_STATUS_CODE).send({ message: "Invalid data" });
         next( new BadRequestError("Invalid data"));
       }
-      // return res.status(DEFAULT_ERROR_STATUS_CODE).send({ message: "An error has occurred on the server" });
       next(err);
     })
 };
