@@ -2,10 +2,13 @@
 
 const errorHandler = (err, req, res, next) => {
   console.error(err);
+  let statusCode;
   if(!err.statusCode){
-    err.statusCode = 500;
+    statusCode = 500;
+  } else{
+    ({ statusCode } = err);
   };
-  res.status(err.statusCode).send({ message: err.message });
+  res.status(statusCode).send({ message: err.message });
 };
 
 module.exports = errorHandler;
